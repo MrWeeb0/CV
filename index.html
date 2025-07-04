@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siretanu Nicolai - Full-Stack Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            animation: slideInDown 1s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            animation: slideInUp 1s ease-out 0.3s both;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-info {
+            margin-top: 1rem;
+            animation: fadeIn 1s ease-out 0.6s both;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-info span {
+            display: inline-block;
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .contact-info span:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .main-content {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            border-radius: 2px;
+            animation: expandWidth 1s ease-out 0.5s both;
+        }
+
+        @keyframes expandWidth {
+            from { width: 0; }
+            to { width: 50px; }
+        }
+
+        .section h2 .emoji {
+            margin-right: 0.5rem;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .experience-item, .project-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #3498db;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .experience-item::before, .project-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(52, 152, 219, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .experience-item:hover::before, .project-item:hover::before {
+            left: 100%;
+        }
+
+        .experience-item:hover, .project-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .experience-item h3, .project-item h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .experience-item .company, .project-item .tech {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-item ul, .project-item ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .experience-item li, .project-item li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .experience-item li::before, .project-item li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #3498db;
+            font-size: 0.8rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-category {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .skill-category:hover {
+            border-color: #3498db;
+            transform: scale(1.05);
+        }
+
+        .skill-category h4 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .skill-tag {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            animation: fadeInScale 0.5s ease-out;
+        }
+
+        .skill-tag:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .soft-skills {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .soft-skill {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .soft-skill:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .languages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .language-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #ecf0f1;
+            transition: all 0.3s ease;
+        }
+
+        .language-item:hover {
+            border-color: #3498db;
+            transform: translateY(-3px);
+        }
+
+        .language-item .flag {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        .floating-nav {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(52, 152, 219, 0.3);
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: #3498db;
+            transform: scale(1.5);
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .contact-info span {
+                display: block;
+                margin: 0.5rem 0;
+            }
+            
+            .floating-nav {
+                display: none;
+            }
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: particle-float 3s linear infinite;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-indicator"></div>
+    
+    <div class="floating-nav">
+        <div class="nav-dot active" data-section="header"></div>
+        <div class="nav-dot" data-section="profile"></div>
+        <div class="nav-dot" data-section="experience"></div>
+        <div class="nav-dot" data-section="projects"></div>
+        <div class="nav-dot" data-section="skills"></div>
+        <div class="nav-dot" data-section="education"></div>
+    </div>
+
+    <div class="container">
+        <header class="header" id="header">
+            <h1>SIRETANU NICOLAI</h1>
+            <p class="subtitle">Full-Stack Web Developer & Co-Founder</p>
+            <div class="contact-info">
+                <span>📧 nicolaisiretanu53@gmail.com</span>
+                <span>📱 079308185</span>
+                <span>🔗 linkedin.com/in/siretanu-nicolai</span>
+                <span>🔗 github.com/MrWeeb0</span>
+                <span>📍 Chişinău, Moldova</span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="left-column">
+                <section class="section" id="profile">
+                    <h2><span class="emoji">👨‍💻</span>Profile</h2>
+                    <p>Self-taught Full-Stack Web Developer and Co‑Founder with a strong passion for building modern, responsive, and user-friendly web applications. Proficient in both front-end and back-end technologies, and experienced in launching full-stack projects from scratch. Known for being adaptable, self-motivated, and a team player with strong communication and leadership skills.</p>
+                </section>
+
+                <section class="section" id="experience">
+                    <h2><span class="emoji">💼</span>Experience</h2>
+                    <div class="experience-item">
+                        <h3>Co‑Founder & Full‑Stack Developer</h3>
+                        <div class="company">LearnZy (EdTech Startup) – Chişinău</div>
+                        <div class="company">01:04:2025 – Present</div>
+                        <ul>
+                            <li>Co-created a gamified learning platform aimed at revolutionizing education.</li>
+                            <li>Built full-stack features including authentication, content delivery, and progress tracking.</li>
+                            <li>Managed integration with tools like Notion and implemented responsive UI with modern frameworks.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section class="section" id="projects">
+                    <h2><span class="emoji">💻</span>Projects</h2>
+                    <div class="project-item">
+                        <h3>🎬 Netflix Clone</h3>
+                        <ul>
+                            <li>Built a functional Netflix-inspired web app using React and Tailwind CSS.</li>
+                            <li>Integrated Firebase for user auth and Firestore for movie data storage.</li>
+                            <li>Features include dynamic routing, content filtering, and a responsive layout.</li>
+                        </ul>
+                    </div>
+                    <div class="project-item">
+                        <h3>👟 Adidas Sneakers Showcase</h3>
+                        <ul>
+                            <li>Developed a stylish landing page showcasing Adidas sneakers.</li>
+                            <li>Used React and advanced CSS animations to create an interactive product gallery.</li>
+                            <li>Optimized for mobile devices and performance.</li>
+                        </ul>
+                    </div>
+                    <div class="project-item">
+                        <h3>📚 LearnZy Web Platform</h3>
+                        <ul>
+                            <li>Architected the platform for an EdTech startup focused on gamified learning.</li>
+                            <li>Designed front-end in React and handled back-end with Node.js and MongoDB.</li>
+                            <li>Improved user engagement through UI/UX enhancements and gamification elements.</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+
+            <div class="right-column">
+                <section class="section" id="skills">
+                    <h2><span class="emoji">🧠</span>Skills</h2>
+                    <div class="skills-grid">
+                        <div class="skill-category">
+                            <h4>Languages & Frameworks</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">JavaScript</span>
+                                <span class="skill-tag">TypeScript</span>
+                                <span class="skill-tag">React</span>
+                                <span class="skill-tag">Next.js</span>
+                                <span class="skill-tag">Node.js</span>
+                                <span class="skill-tag">Express</span>
+                                <span class="skill-tag">HTML5</span>
+                                <span class="skill-tag">CSS3</span>
+                                <span class="skill-tag">Tailwind</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h4>Databases</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">MongoDB</span>
+                                <span class="skill-tag">Firebase</span>
+                                <span class="skill-tag">PostgreSQL</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h4>Tools</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">Git</span>
+                                <span class="skill-tag">GitHub</span>
+                                <span class="skill-tag">VS Code</span>
+                                <span class="skill-tag">Postman</span>
+                                <span class="skill-tag">Figma</span>
+                                <span class="skill-tag">Vercel</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h4>Development</h4>
+                            <div class="skill-tags">
+                                <span class="skill-tag">REST APIs</span>
+                                <span class="skill-tag">Responsive Design</span>
+                                <span class="skill-tag">Authentication</span>
+                                <span class="skill-tag">Deployment</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section" id="education">
+                    <h2><span class="emoji">🎓</span>Education</h2>
+                    <div class="experience-item">
+                        <h3>Graduate – Liceul Teoretic "Ion Pelivan"</h3>
+                        <div class="company">Chişinău, Moldova</div>
+                        <ul>
+                            <li>Graduated with a focus on Informatics, Mathematics</li>
+                            <li>Developed passion for software development through self-learning and hands-on projects.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2><span class="emoji">💬</span>Soft Skills</h2>
+                    <div class="soft-skills">
+                        <div class="soft-skill">Problem-Solving & Critical Thinking</div>
+                        <div class="soft-skill">Communication & Teamwork</div>
+                        <div class="soft-skill">Time Management & Discipline</div>
+                        <div class="soft-skill">Adaptability & Continuous Learning</div>
+                        <div class="soft-skill">Initiative & Responsibility</div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2><span class="emoji">🌐</span>Languages</h2>
+                    <div class="languages-grid">
+                        <div class="language-item">
+                            <span class="flag">🇷🇴</span>
+                            <div><strong>Romanian</strong></div>
+                            <div>Native</div>
+                        </div>
+                        <div class="language-item">
+                            <span class="flag">🇺🇸</span>
+                            <div><strong>English</strong></div>
+                            <div>Fluent</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Scroll progress indicator
+        function updateScrollProgress() {
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.body.offsetHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            document.querySelector('.scroll-indicator').style.width = scrollPercent + '%';
+        }
+
+        window.addEventListener('scroll', updateScrollProgress);
+
+        // Floating navigation
+        const sections = document.querySelectorAll('section, header');
+        const navDots = document.querySelectorAll('.nav-dot');
+
+        function updateActiveSection() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-section') === current) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveSection);
+
+        // Smooth scroll navigation
+        navDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const sectionId = dot.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+                section.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Particle animation
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 3 + 's';
+            document.querySelector('.header').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 3000);
+        }
+
+        setInterval(createParticle, 300);
+
+        // Staggered animation for skill tags
+        function animateSkillTags() {
+            const skillTags = document.querySelectorAll('.skill-tag');
+            skillTags.forEach((tag, index) => {
+                tag.style.animationDelay = (index * 0.1) + 's';
+            });
+        }
+
+        // Initialize animations when page loads
+        window.addEventListener('load', () => {
+            animateSkillTags();
+            updateScrollProgress();
+            updateActiveSection();
+        });
+
+        // Smooth hover effects for project and experience items
+        document.querySelectorAll('.experience-item, .project-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add typing effect to the header subtitle
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            
+            setTimeout(type, 1000);
+        }
+
+        window.addEventListener('load', () => {
+            const subtitle = document.querySelector('.subtitle');
+            const originalText = subtitle.textContent;
+            typeWriter(subtitle, originalText, 50);
+        });
+    </script>
+</body>
+</html>
